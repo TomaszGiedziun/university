@@ -7,7 +7,6 @@ class SafeForKids:
 
 		"""
 			self.array_file_name = array_file_name
-			self.array_file_name = array_file_name
 			verbose - display debugg messages
 		"""
 		self.array_file_name=array_file_name
@@ -18,8 +17,9 @@ class SafeForKids:
 		if self.verbose:
 			print message
 
-	def generateArray(self,array_start=0,array_size=10):
+	def generateArray(self,array_start=0,array_size=26):
 		self.array_size = array_size
+		self.array_start = array_start
 		"""
 			array_start - offset 
 			self.array_size = array_size
@@ -49,35 +49,65 @@ class SafeForKids:
 			with open (self.key_file_name,'w') as f:
 				c = list(self.array[0])
 				random.shuffle(c)
-				self.d([chr(c[x]) for x in range(self.key_size)])
+				self.key = [chr(c[x]) for x in range(self.key_size)]
+				self.d(self.key)
 				f.write(''.join([chr(c[x]) for x in range(self.key_size)]))
 
 	def readKey(self):
 		with open(self.key_file_name,'r') as f:
 			self.key =[[x for x in line if ord(x)!= 32] for line in f][0] # reading key w/out space
+			self.key_size = len(self.key)
 			self.d(self.key)
 			"""
 				TO DO:
-				check for validity
+				check for validity key in array
 			"""
 
+	def encrypt(self,in_file_name='in.txt',out_file_name='out.txt',key=None):
+		self.out_file_name=out_file_name
+		self.in_file_name=in_file_name
+		if not key:
+			key = self.key
 
-	def encrypt(self):
-		"""
-			TO DO:
-			encyption and decrypition using : 
-			[self.array_size - .index(x)]% self.array_size
-		"""
-		print 'lol'
+		with open(self.in_file_name,'r') as f:
+			c = [[x for x in line]for line in f][0]
+			print 'read: %s ' % c
+		if self.key_size > 1 :
+			z = [key[x%self.key_size] for x in range(len(c))]
+			for x in range(len(c)):
+				if ord(c[x]) == 32:
+					z.insert(x,' ')
+					z.pop()
+			print 'trans: %s' % z
+			o = []
+			for x in range(len(c)):
+				if ord(c[x]) in self.array[0]:
+					arg1 = self.array[0].index(ord(c[x]))
+				if ord(z[x]) in self.array[0]:
+					arg2 = self.array[0].index(ord(z[x]))
+				if ord(c[x]) in self.array[0] and ord(z[x]) in self.array[0]:
+					o.append(chr(self.array[arg1][arg2]))
+				if not(ord(c[x]) in self.array[0]):
+					o.append(c[x])
+			print 'result: %s' % o
+			with open(self.out_file_name,'w')as f:
+				f.write(''.join(j for j in o))
 
+	def decrypt(self):
+		if self.key_size > 1 :
+			decrypt_key = [chr(((self.array_size - self.array[0].index(ord(x)))% self.array_size)+self.array_start) for x in self.key]
+			print decrypt_key
+			self.encrypt(in_file_name='out.txt',out_file_name='decrypted_out.txt',key=decrypt_key)
 
 
 
 if __name__ == "__main__":
 	sfk = SafeForKids(verbose=True)
-	sfk.generateArray(50)
+	sfk.generateArray(array_start=97,array_size=26)
 	# sfk.readArray()
 	sfk.generateKey()
-	sfk.readKey()
+	# sfk.readKey()
+	sfk.encrypt()
+	sfk.decrypt()
 
 

@@ -1,0 +1,4 @@
+"""
+	Zadanie programowania liniowego
+"""
+
