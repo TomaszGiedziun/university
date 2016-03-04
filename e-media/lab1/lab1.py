@@ -58,7 +58,7 @@ class VerySecure:
 
 if __name__ == "__main__":
 	vs = VerySecure(verbose=True)
-	vs.read_key()
-	# vs.generate_key()
+	# vs.read_key()
+	vs.generate_key()
 	vs.encrypt()
 	vs.decrypt()
