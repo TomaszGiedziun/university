@@ -6,7 +6,8 @@ class SafeForKids:
 	def __init__(self,array_file_name='array.txt',key_file_name='key.txt',verbose=False):
 
 		"""
-			self.array_file_name = array_file_name
+			self.array_file_name - file containing only fist line of array
+			self.key_file_name - file containing key 
 			verbose - display debugg messages
 		"""
 		self.array_file_name=array_file_name
@@ -21,7 +22,7 @@ class SafeForKids:
 		self.array_size = array_size
 		self.array_start = array_start
 		"""
-			array_start - offset 
+			array_start - offset number in ascii
 			self.array_size = array_size
 		"""
 		self.array = [[((i+x)%self.array_size)+array_start for x in range(self.array_size)] for i in range(self.array_size)]
@@ -57,13 +58,17 @@ class SafeForKids:
 		with open(self.key_file_name,'r') as f:
 			self.key =[[x for x in line if ord(x)!= 32] for line in f][0] # reading key w/out space
 			self.key_size = len(self.key)
-			self.d(self.key)
+			self.d('read key: %s' % self.key)
 			"""
 				TO DO:
 				check for validity key in array
 			"""
 
 	def encrypt(self,in_file_name='in.txt',out_file_name='out.txt',key=None):
+		"""
+			self.out_file_name - output of this function
+			self.in_file_name - input for this function
+		"""
 		self.out_file_name=out_file_name
 		self.in_file_name=in_file_name
 		if not key:
@@ -104,11 +109,11 @@ class SafeForKids:
 
 	def decrypt(self,in_file_name='out.txt',out_file_name='decrypted_out.txt'):
 		self.d('Decrypt:')
-		if self.key_size > 1:
+		if self.key_size > 1: # decrypt case w/ logner then 1 key size
 			decrypt_key = [chr(((self.array_size - self.array[0].index(ord(x)))% self.array_size)+self.array_start) for x in self.key]
 			self.d(decrypt_key)
 			self.encrypt(in_file_name='out.txt',out_file_name='decrypted_out.txt',key=decrypt_key)
-		if self.key_size == 1:
+		if self.key_size == 1: # decrypt case for autokey
 			with open(in_file_name,'r') as f:
 				c = [[x for x in line]for line in f][0]
 				self.d('read: %s' % c)
@@ -131,10 +136,6 @@ class SafeForKids:
 					o.append(c[x])
 					z.append(c[x])
 			self.d('result: %s' % o)
-			
-			"""
-				decryp first from key then append decyption to key list
-			"""
 
 
 
@@ -142,8 +143,8 @@ if __name__ == "__main__":
 	sfk = SafeForKids(verbose=True)
 	sfk.generateArray(array_start=97,array_size=26)
 	# sfk.readArray()
-	# sfk.generateKey()
-	sfk.readKey()
+	sfk.generateKey(key_size = 1)
+	# sfk.readKey()
 	sfk.encrypt()
 	sfk.decrypt()
 
