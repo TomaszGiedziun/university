@@ -1,2 +1,2 @@
 from fractions import gcd
-print gcd(25,5)
+print gcd(120,7)
