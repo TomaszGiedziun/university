@@ -1,0 +1,39 @@
+﻿@model List<PrzychodniaLekarska.Models.SekretarkaModel>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista sekretarek</h2>
+
+<br />
+<div>
+    @Html.ActionLink("Dodaj", "Create", null, new { @class = "btn btn-default" })
+</div>
+<br />
+
+<table class="table table-hover">
+    <tr>
+        <th>Imię i nazwisko</th>
+        <th>Adres</th>
+        <th>Adres mail</th>
+        <th>Numer telefonu</th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Address) </td>
+            <td>@Html.DisplayFor(modelItem => item.MailAddress)</td>
+            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+           <td>
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.ID }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Usuń", "Delete", new { id = item.ID }, new { @class = "btn btn-default" })
+            </td>
+        </tr>
+    }
+</table>
