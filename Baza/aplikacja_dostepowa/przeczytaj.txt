@@ -1,0 +1,12 @@
+Jak uruchomiæ?
+
+Konfiguracja bazy:
+
+W konsoli na dole(chyba nuget.org czy coœ takiego) wpisujesz Update-Database
+
+Dajesz run.
+
+Dzia³a jak narazie Pacjent i Sekretarka
+Nie ma linka, wiêc wpisujesz:
+	localhost:coœtamcoœtam/Pacjent
+	localhost:coœtamcoœtam/Sekretarka

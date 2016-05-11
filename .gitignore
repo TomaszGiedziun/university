@@ -68,3 +68,5 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+/Baza/aplikacja_dostepowa/PrzychodniaLekarska/packages
+/Baza/aplikacja_dostepowa/PrzychodniaLekarska/PrzychodniaLekarska/obj
